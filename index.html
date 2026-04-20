@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EduShield — Cybersecurity Monitor</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- CSS file -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- NAV BAR -->
+  <nav>
+    <div class="logo">
+      EduShield
+      <span>CYBERSECURITY MONITOR</span>
+    </div>
+    <button class="active" onclick="showPage('scan', this)">🔍 New Scan</button>
+    <button onclick="showPage('scanning', this)">⏳ Scanning</button>
+    <button onclick="showPage('results', this)">📊 Results</button>
+    <button onclick="showPage('compliance', this)">🇦🇺 Compliance</button>
+    <button onclick="showPage('history', this)">🕓 History</button>
+    <div class="nav-company">Tech Adaptive Pandit Pty Ltd — Adelaide SA</div>
+  </nav>
+
+  <!-- PAGE 1 — NEW SCAN -->
+  <div class="page active" id="page-scan">
+    <div style="max-width:640px; margin:0 auto; text-align:center; padding-top:40px;">
+      <p class="page-title">Cybersecurity Assessment</p>
+      <p class="page-subtitle">
+        Enter a website URL to scan for vulnerabilities, phishing risks,
+        login security issues, and Australian compliance.
+      </p>
+      <div class="card">
+        <input id="urlInput" class="input-field" type="text"
+          placeholder="https://school.edu.au" />
+        <input id="emailInput" class="input-field" type="email"
+          placeholder="your@email.com (PDF report will be emailed here)" />
+        <div style="text-align:right;">
+          <button class="btn-primary" onclick="startScan()">Start Scan →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 2 — SCANNING PROGRESS -->
+  <div class="page" id="page-scanning">
+    <p class="page-title">🔄 Scanning in progress...</p>
+    <p class="page-subtitle" id="scanningUrl">Analysing your target URL</p>
+    <div id="moduleList" style="max-width:560px;"></div>
+  </div>
+
+  <!-- PAGE 3 — RESULTS -->
+  <div class="page" id="page-results">
+    <p class="page-title">📊 Scan Results</p>
+    <p class="page-subtitle">Vulnerabilities detected across 6 security modules</p>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-label" style="color:var(--danger);">● Critical</div>
+        <div class="stat-number" style="color:var(--danger);">3</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label" style="color:#ea580c;">◆ High</div>
+        <div class="stat-number" style="color:#ea580c;">9</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label" style="color:var(--warning);">▲ Medium</div>
+        <div class="stat-number" style="color:var(--warning);">7</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label" style="color:var(--success);">■ Low</div>
+        <div class="stat-number" style="color:var(--success);">3</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label" style="color:var(--gray-mid);">■ Total</div>
+        <div class="stat-number" style="color:var(--gray-dark);">23</div>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:24px; flex-wrap:wrap;">
+      <div class="card" style="text-align:center; min-width:180px;">
+        <div style="font-size:12px; color:var(--gray-mid);
+                    letter-spacing:1px; margin-bottom:12px;">RISK SCORE</div>
+        <div style="font-size:72px; font-weight:700; color:var(--danger);
+                    font-family:'DM Mono',monospace; line-height:1;">100</div>
+        <div style="color:var(--danger); font-weight:600;
+                    letter-spacing:3px; margin-top:10px; font-size:13px;">CRITICAL</div>
+      </div>
+      <div class="card" style="flex:1; min-width:300px;">
+        <div style="font-size:12px; color:var(--gray-mid);
+                    letter-spacing:1px; margin-bottom:20px; font-weight:600;">
+          FINDINGS BY MODULE
+        </div>
+        <div id="moduleFindings"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 4 — COMPLIANCE -->
+  <div class="page" id="page-compliance">
+    <p class="page-title">🇦🇺 Australian Compliance</p>
+    <p class="page-subtitle">
+      Mapped to ACSC Essential Eight, Privacy Act 1988, and Cyber Security Act 2024
+    </p>
+    <div class="card" style="max-width:640px; margin-bottom:24px;">
+      <div style="font-size:12px; color:var(--gray-mid);
+                  letter-spacing:1px; margin-bottom:20px; font-weight:600;">
+        ACSC ESSENTIAL EIGHT MATURITY LEVELS
+      </div>
+      <div id="complianceBars"></div>
+    </div>
+    <div style="display:flex; gap:20px; flex-wrap:wrap;">
+      <div class="card" style="min-width:220px;">
+        <div style="font-size:12px; color:var(--gray-mid);
+                    margin-bottom:10px; font-weight:600;">
+          PRIVACY ACT 1988 — APP 11
+        </div>
+        <div style="font-size:42px; font-weight:700; color:var(--warning);
+                    font-family:'DM Mono',monospace;">42%</div>
+        <div style="color:var(--warning); font-size:13px; margin-top:6px;">
+          Needs Improvement
+        </div>
+      </div>
+      <div class="card" style="min-width:220px;">
+        <div style="font-size:12px; color:var(--gray-mid);
+                    margin-bottom:10px; font-weight:600;">
+          CYBER SECURITY ACT 2024
+        </div>
+        <div style="font-size:42px; font-weight:700; color:var(--danger);
+                    font-family:'DM Mono',monospace;">28%</div>
+        <div style="color:var(--danger); font-size:13px; margin-top:6px;">
+          Non-Compliant
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 5 — HISTORY -->
+  <div class="page" id="page-history">
+    <p class="page-title">🕓 Scan History</p>
+    <p class="page-subtitle">All previous scans run through EduShield</p>
+    <table>
+      <thead>
+        <tr>
+          <th>URL Scanned</th>
+          <th>Date</th>
+          <th>Risk Score</th>
+          <th>Findings</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>https://school.edu.au</td>
+          <td>2025-03-31</td>
+          <td style="color:var(--danger); font-weight:600;">100 — Critical</td>
+          <td>23</td>
+          <td style="color:var(--success);">✅ Complete</td>
+        </tr>
+        <tr>
+          <td>https://university.edu.au</td>
+          <td>2025-03-30</td>
+          <td style="color:#ea580c; font-weight:600;">72 — High</td>
+          <td>17</td>
+          <td style="color:var(--success);">✅ Complete</td>
+        </tr>
+        <tr>
+          <td>https://tafe.edu.au</td>
+          <td>2025-03-28</td>
+          <td style="color:var(--warning); font-weight:600;">55 — Medium</td>
+          <td>11</td>
+          <td style="color:var(--success);">✅ Complete</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- JavaScript file — always at the bottom -->
+  <script src="script.js"></script>
+
+</body>
+</html>
